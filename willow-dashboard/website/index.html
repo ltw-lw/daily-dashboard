@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f5f6f8">
+<title>Willow's Daily Dashboard</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<svg aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden"><defs>
+<symbol id="i-leaf" viewBox="0 0 24 24"><path d="M5 19c-3-5-2-11 5-14 3-1 5-1 9-1 0 5-1 9-4 12-3 3-6 3-10 3Zm0 0L16 8"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6"/><path d="m15 15 5 5"/></symbol>
+<symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18"/></symbol>
+<symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5 9-5Zm-9 9 9 5 9-5M3 16l9 5 9-5"/></symbol>
+<symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 3v17h17M7 14l4-5 4 3 5-7"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+<symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+</defs></svg>
+<header class="header"><div class="header-inner"><div class="brand"><div class="brand-mark"><svg class="icon" aria-hidden="true"><use href="#i-leaf"/></svg></div><h1>Willow's Daily Dashboard</h1></div><div class="header-tools"><div class="run-time"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg><label for="snapshot-select">运行时间</label><select id="snapshot-select" aria-label="选择运行时间"><option>读取中</option></select><span class="timezone">北京时间</span></div></div></div></header>
+<main id="dashboard" aria-busy="true">
+<div id="load-message" class="load-message" role="status"><span id="load-text">正在读取数据…</span><button id="retry-load" hidden>重新读取</button></div>
+<div class="toolbar"><div class="market-tabs" role="group" aria-label="按市场筛选"><button class="market-tab" data-market="CN" aria-pressed="true">A股</button><button class="market-tab" data-market="US" aria-pressed="false">美股</button><button class="market-tab" data-market="HK" aria-pressed="false">港股</button><button class="market-tab" data-market="KR" aria-pressed="false">韩股</button><button class="market-tab" data-market="JP" aria-pressed="false">日股</button></div><label class="search-box"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg><input id="asset-search" type="search" placeholder="搜索代码或名称" aria-label="搜索代码或名称" autocomplete="off"><button class="clear" id="clear-search" type="button" aria-label="清除搜索" hidden><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button></label></div>
+<div class="legend-strip">
+<div class="legend-group" aria-label="交易状态图例"><span class="legend-title">交易状态</span><span class="legend-item"><i class="session regular"></i>交易中</span><span class="legend-item"><i class="session pre"></i>盘前</span><span class="legend-item"><i class="session post"></i>盘后</span><span class="legend-item"><i class="session closed"></i>收盘 / 休市</span><span class="legend-item"><i class="session break"></i>午休</span></div>
+
+</div>
+<div class="top-grid">
+<section class="panel" id="macro" aria-labelledby="macro-title"><div class="panel-heading"><h2 class="panel-title" id="macro-title"><svg class="icon" aria-hidden="true"><use href="#i-globe"/></svg>市场宏观</h2></div><div class="table-wrap"><div class="table-scroll"><table aria-label="市场宏观"><colgroup><col class="asset-col"><col class="price-col"><col class="change-col"><col class="signal-col"></colgroup><thead><tr><th>标的</th><th class="numeric">最新价</th><th class="numeric" title="涨跌幅口径可在数值上悬停查看">涨跌幅</th><th class="col-signal">信号</th></tr></thead><tbody id="macro-rows"></tbody></table></div><div class="empty-state" hidden>暂无匹配标的</div></div></section>
+<section class="panel" id="sectors" aria-labelledby="sector-title"><div class="panel-heading"><h2 class="panel-title" id="sector-title"><svg class="icon" aria-hidden="true"><use href="#i-layers"/></svg>行业与主题ETF</h2></div><div class="table-wrap"><div class="table-scroll"><table aria-label="行业与主题ETF"><colgroup><col class="asset-col"><col class="price-col"><col class="change-col"><col class="signal-col"></colgroup><thead><tr><th>标的</th><th class="numeric">最新价</th><th class="numeric" title="涨跌幅口径可在数值上悬停查看">涨跌幅</th><th class="col-signal">信号</th></tr></thead><tbody id="sector-rows"></tbody></table></div><div class="empty-state" hidden>暂无匹配标的</div><div class="pagination" id="sector-pagination"><span id="sector-range" aria-live="polite"></span><div class="page-controls"><label for="sector-page-size">每页</label><select id="sector-page-size" aria-label="每页ETF数量"><option value="12">12</option><option value="24">24</option><option value="all">全部</option></select><button id="sector-previous-page" aria-label="ETF上一页">‹</button><span id="sector-page-number" class="mono"></span><button id="sector-next-page" aria-label="ETF下一页">›</button></div></div></div></section>
+</div>
+<section class="panel stock-panel" id="stocks" aria-labelledby="stock-title"><div class="panel-heading"><h2 class="panel-title" id="stock-title"><svg class="icon" aria-hidden="true"><use href="#i-chart"/></svg>个股信号</h2></div><div class="table-wrap"><div class="table-scroll"><table class="stock-table" aria-label="个股信号"><colgroup><col class="asset-col"><col class="price-col"><col class="change-col"><col class="signal-col"><col class="earnings-col"></colgroup><thead><tr><th>标的</th><th class="numeric">最新价</th><th class="numeric" title="涨跌幅口径可在数值上悬停查看">涨跌幅</th><th class="col-signal">信号</th><th class="earnings" title="标的当地财报日期">下一次财报日</th></tr></thead><tbody id="stock-rows"></tbody></table></div><div class="empty-state" hidden>暂无匹配标的</div>
+<div class="pagination" id="stock-pagination"><span id="stock-range" aria-live="polite"></span><div class="page-controls"><label for="page-size">每页</label><select id="page-size" aria-label="每页标的数量"><option value="12">12</option><option value="24">24</option><option value="all">全部</option></select><button id="previous-page" aria-label="上一页">‹</button><span id="page-number" class="mono"></span><button id="next-page" aria-label="下一页">›</button></div></div></div></section>
+<div class="exit-grid" id="exit-panels">
+<section class="panel profit-panel" id="take-profit" aria-labelledby="profit-title"><div class="panel-heading"><h2 class="panel-title" id="profit-title"><span class="profit-marker"></span>止盈提醒</h2></div><div class="table-wrap"><div class="table-scroll"><table class="exit-table" aria-label="止盈提醒"><colgroup><col class="asset-col"><col class="price-col"><col class="change-col"><col class="rule-col"></colgroup><thead><tr><th>标的</th><th class="numeric">最新价</th><th class="numeric">涨跌幅</th><th class="rule-cell">触发逻辑</th></tr></thead><tbody id="profit-rows"></tbody></table></div><div class="empty-state" hidden>暂无已确认提醒</div></div></section>
+<section class="panel stop-panel" id="stop-loss" aria-labelledby="stop-title"><div class="panel-heading"><h2 class="panel-title" id="stop-title"><span class="stop-marker"></span>止损提醒</h2></div><div class="table-wrap"><div class="table-scroll"><table class="exit-table" aria-label="止损提醒"><colgroup><col class="asset-col"><col class="price-col"><col class="change-col"><col class="rule-col"></colgroup><thead><tr><th>标的</th><th class="numeric">最新价</th><th class="numeric">涨跌幅</th><th class="rule-cell">触发逻辑</th></tr></thead><tbody id="stop-rows"></tbody></table></div><div class="empty-state" hidden>暂无已确认提醒</div></div></section>
+</div>
+
+<noscript>请开启浏览器的JavaScript以查看行情表格。</noscript>
+</main>
+<script src="assets/app.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "snapshots": [
+    {
+      "id": "2026-10-13_1344",
+      "updatedAt": "2026-10-13T13:44:00+08:00",
+      "path": "data/latest.json"
+    },
+    {
+      "id": "2026-10-10_0609",
+      "updatedAt": "2026-10-10T06:09:00+08:00",
+      "path": "data/snapshots/2026-10-10_0609.json"
+    }
+  ]
+}
